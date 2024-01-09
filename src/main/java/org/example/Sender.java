@@ -5,22 +5,15 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Sender {
-    private final static String SERVER_ADDRESS = "localhost";
-    private final static int PORT_NUMBER = 8081;
-    private final Reader reader;
-
-    public Sender() {
-        this.reader = new Reader();
-    }
-
-    public void send() {
-        try (
-                Socket socket = new Socket(SERVER_ADDRESS, PORT_NUMBER);
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-        ) {
-            reader.read(out);
+    private static final int ZERO_INDEX = 0;
+    private static final int FIRST_INDEX = 1;
+    public void send(ConsoleReader reader, String[] properties) {
+        try (Socket socket = new Socket(properties[ZERO_INDEX], Integer.parseInt(properties[FIRST_INDEX]));
+             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true)) {
+            reader.read(printWriter);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 }
+
